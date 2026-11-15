@@ -34,6 +34,7 @@ public class AutoTotem implements ClientModInitializer {
 
     private static KeyMapping toggleKey;
     private static KeyMapping settingsKey;
+    private static KeyMapping equipKey;
 
     private static final Path CONFIG =
             FabricLoader.getInstance().getConfigDir().resolve("autototem.properties");
@@ -54,7 +55,7 @@ public class AutoTotem implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        System.out.println("[AutoTotem] loaded");
+        System.out.println("[AutoTotem] 1.1.0 loaded");
         loadConfig();
 
         KeyMapping.Category category = KeyMapping.Category.register(
@@ -63,6 +64,8 @@ public class AutoTotem implements ClientModInitializer {
                 "key.autototem.toggle", 71, category));   // G
         settingsKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.autototem.settings", 72, category)); // H
+        equipKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+                "key.autototem.equip", 86, category)); // V
 
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
     }
@@ -78,6 +81,12 @@ public class AutoTotem implements ClientModInitializer {
         }
         while (settingsKey.consumeClick()) {
             if (mc.gui.screen() == null) mc.gui.setScreen(new SettingsScreen());
+        }
+
+        while (equipKey.consumeClick()) {
+            if (mc.player != null && mc.gameMode != null && mc.gui.screen() == null) {
+                equipTotem(mc, mc.player);
+            }
         }
 
         LocalPlayer p = mc.player;
@@ -135,6 +144,21 @@ public class AutoTotem implements ClientModInitializer {
                 lastCount = countTotems(p);
             }
         }
+    }
+
+    private static void equipTotem(Minecraft mc, LocalPlayer p) {
+        if (p.getOffhandItem().is(Items.TOTEM_OF_UNDYING)) {
+            p.sendSystemMessage(Component.literal("Totem already in offhand"));
+            return;
+        }
+        int slot = findTotem(p);
+        if (slot < 0) {
+            p.sendSystemMessage(Component.literal("No totem in your inventory"));
+            return;
+        }
+        int menuSlot = slot < 9 ? 36 + slot : slot;
+        mc.gameMode.handleContainerInput(
+                p.inventoryMenu.containerId, menuSlot, 40, ContainerInput.SWAP, p);
     }
 
     private static int findTotem(LocalPlayer p) {
