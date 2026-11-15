@@ -3,7 +3,6 @@ package com.example.hub;
 import com.example.anchormacro.AnchorMacro;
 import com.example.autoattack.AutoAttackClient;
 import com.example.autoattack.AutoAttackSettingsScreen;
-import com.example.autototem.AutoTotem;
 import com.example.bevision.BlockFinderScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -36,11 +35,6 @@ public class HubScreen extends Screen {
                 AnchorMacro::isEnabled,
                 () -> AnchorMacro.setEnabled(!AnchorMacro.isEnabled()),
                 AnchorMacro::settingsScreen));
-
-        modules.add(new Module("Auto Totem",
-                AutoTotem::isEnabled,
-                () -> AutoTotem.setEnabled(!AutoTotem.isEnabled()),
-                AutoTotem::settingsScreen));
 
         modules.add(new Module("Auto Click",
                 AutoAttackClient::isAutoClick,

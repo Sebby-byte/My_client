@@ -3,13 +3,12 @@
   "id": "myclient",
   "version": "${version}",
   "name": "My Client",
-  "description": "Anchor Macro, Auto Totem, Auto Attack, Block Vision and Invisible Hitboxes in one mod, with one menu (Right Shift).",
+  "description": "Anchor Macro, Auto Attack, Block Vision and Invisible Hitboxes in one mod, with one menu (Right Shift).",
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
     "client": [
       "com.example.anchormacro.AnchorMacro",
-      "com.example.autototem.AutoTotem",
       "com.example.autoattack.AutoAttackClient",
       "com.example.bevision.BEVisionClient",
       "com.example.invisiblehitboxes.InvisibleHitboxesClient",
